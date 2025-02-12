@@ -1,5 +1,3 @@
-# Welcome to My GitHub Pages
-
 > **“Somewhere in the semantics of natural language and the ambiguity of our understanding in reality leaves truth as one of the great mysteries”**
 
 ## Introduction
