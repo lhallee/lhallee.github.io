@@ -3,7 +3,10 @@
 ## Introduction
 
 **Hi, I’m [@lhallee](https://github.com/lhallee)!**  
-My name is Logan Hallee, a scientist working on computational protein modeling through the lens of machine learning. I wear several hats. Most notably, I am the the Chief Scientific Officer and Founder of Synthyra, a Public Benefit LLC which functions as a research org for protein science. I am also a PhD Candidate in Bioinformatics Data Science at the University of Delaware in the ([Gleghorn Lab](https://www.gleghornlab.com/)), where my research is focused on (you guessed it) protein modeling with transformer neural networks. On the side I run a fun blog called [Minds and Molecules](https://medium.com/minds-and-molecules) which touches on philosophical ideas I find facinating.
+
+My name is Logan Hallee, a scientist working on computational protein modeling through the lens of machine learning. Most notably, I am the the Chief Scientific Officer and Founder of Synthyra, a Public Benefit LLC which functions as a research org for protein science. I am also a PhD Candidate in Bioinformatics at the University of Delaware in the ([Gleghorn Lab](https://www.gleghornlab.com/)), where my research is focused on (you guessed it) protein modeling with transformer neural networks. On the side I run a fun blog called [Minds and Molecules](https://medium.com/minds-and-molecules) which touches on philosophical ideas I find facinating.
+
+### You can find my CV [here](https://docs.google.com/document/d/1q4mQotGm7MyU-TLmf_x17bRxalCy_Fcz/edit?usp=sharing&ouid=110410923518282620159&rtpof=true&sd=true)
 
 ## Research Highlights
 
@@ -13,7 +16,7 @@ My name is Logan Hallee, a scientist working on computational protein modeling t
 - Ranks in the [**top 3% of research outputs**](https://www.biorxiv.org/content/10.1101/2023.06.07.544109v1.article-metrics) by Altmetric.  
 
 ### Tetris For Proteins
-- Collaborated with Stephen Wolfram & other mentors at the Wolfram Winter School.  
+- Collaborated with **Stephen Wolfram** & other mentors at the Wolfram Winter School.  
 - Developed “[Tetris For Proteins](https://community.wolfram.com/groups/-/m/t/2777595)” – a shape-based metric emulating lock-and-key enzyme-substrate interactions.  
 - Generates hypotheses on protein aggregation likelihood.
 
@@ -28,7 +31,7 @@ My name is Logan Hallee, a scientist working on computational protein modeling t
 
 ### Mixture of Experts Extension
 - Invented a [Mixture of Experts extension](https://arxiv.org/abs/2401.15713) for scalable transformer networks adept at sentence similarity tasks.  
-- Future networks with N experts** could perform like N independently trained networks, offering significant time and computational savings in semantic retrieval systems.
+- Future networks with N experts could perform like N independently trained networks, offering significant time and computational savings in semantic retrieval systems.
 - In review.
 
 ### Computer Vision in Biology
@@ -48,17 +51,21 @@ My name is Logan Hallee, a scientist working on computational protein modeling t
 
 ## Socials / Websites
 
+- [Synthyra](https://synthyra.com/)
 - [GitHub](https://github.com/lhallee)
 - [LinkedIn](https://www.linkedin.com/in/logan-hallee/)
 - [X](https://x.com/Logan_Hallee)
-- [Synthyra](https://www.gleghornlab.com/protein-models) - [In progress](https://synthyra.com/)
 - [Gleghorn Lab](https://www.gleghornlab.com/)
 - [Medium](https://medium.com/minds-and-molecules)
 - [Substack](https://mindsandmolecules.substack.com/)
 - [Facebook](https://www.facebook.com/mindsandmolecules)
 
 ### Contact
-I check my lhallee@udel.edu email the most
+
+Research related queries - lhallee@udel.edu
+
+Business related queries - logan@synthyra.com
+
 ---
 
-> **Last Updated**: Dec 2024
+> **Last Updated**: April 2025
