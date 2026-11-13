@@ -17,7 +17,9 @@ LINK = re.compile(r'(?P<attribute>href|src)="(?P<path>assets/[^"?]+\.(?:css|js))
 
 def stamp(match: re.Match) -> str:
     path = match.group("path")
-    digest = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()[:10]
+    # Line endings are set by the checkout, so they are left out of the hash.
+    content = (ROOT / path).read_bytes().replace(b"\r\n", b"\n")
+    digest = hashlib.sha256(content).hexdigest()[:10]
     return f'{match.group("attribute")}="{path}?v={digest}"'
 
 
