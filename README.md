@@ -1,158 +1,68 @@
-> **“Somewhere in the semantics of natural language and the ambiguity of our understanding in reality leaves truth as one of the great mysteries”**
+# lhallee.github.io
 
-# Introduction
+The source of [lhallee.github.io](https://lhallee.github.io/), Logan Hallee's personal site. It covers research, open source software, Synthyra, the Minds and Molecules essays, and academic work.
 
-**Hi, I’m [@lhallee](https://github.com/lhallee)!**  
+## Layout
 
-My name is Logan Hallee. I’m a scientist working on computational protein modeling through the lens of machine learning. I’m the Chief Scientific Officer and Founder of Synthyra, a Public Benefit LLC that operates as a research organization and CRO for protein science. I’m also a PhD Candidate in Bioinformatics at the University of Delaware in the [Gleghorn Lab](https://www.gleghornlab.com/), where my research focuses on protein modeling with transformer neural networks. On the side, I write [Minds and Molecules](https://medium.com/minds-and-molecules), a blog exploring the philosophy behind science and computation.
+- `index.html` is the whole site. It is plain HTML with no build step and no dependencies beyond Google Fonts.
+- `assets/css/site.css` holds the styles. The site is dark only, and the color tokens sit at the top of the file.
+- `assets/js/site.js` draws every visual from code. That covers the map of the human proteome in the hero, the small visual beside each research thread, the turning structure in the Design thread, the map of E. coli against the human cell in the Synthyra section, the sketch beside the essays, and the filter on the Academic work list.
+- `assets/data/universe_human.js` holds the hero's map, which is a three-dimensional layout of the 19,226 proteins of the human proteome by predicted interactions, the tree that joins them, and each protein's cluster.
+- `assets/data/complex_1yy9.js` holds the C-alpha trace of PDB 1YY9, the EGFR extracellular domain bound by the cetuximab Fab.
+- `assets/data/interactome_ecoli_human.js` holds the Atlas map of E. coli K-12 against the human cell, which is each protein's position in its cell, a sample of the contacts inside each cell, the top-scored contacts between the two cell membranes, and the trees of contacts that the moving signals follow. The page draws no contact until a signal runs along it, and the Show contacts button draws them all.
+- `assets/logan_hallee_cv.pdf` is the CV that the site and the GitHub profile link to.
+- `assets/img/` holds the portrait and the favicon. The page carries no figures by design.
+- `tools/` holds the scripts that generate files, described under Updating.
+- `_config.yml` keeps this file and `tools/` out of the published site. The Pages workflow in `.github/workflows/` copies everything else as it is.
 
-I’m motivated by safe computational systems that help us better understand the universe at every level of abstraction. However, mostly work towards progress of high-fidelity modeling of the protein universe - efforts that help turn biochemistry into a programmable medium. I believe true biochemical mastery can unlock organic carbon capture, improved crops, efficient circular economies, and major advances in medicine.
+The stylesheet and the script also carry the styles and the starfield for an essay page. That page returns as `vision.html` once the essay is finished.
 
-### You can find my CV [here](https://docs.google.com/document/d/1q4mQotGm7MyU-TLmf_x17bRxalCy_Fcz/edit?usp=sharing&ouid=110410923518282620159&rtpof=true&sd=true)
+## Keeping it fast and aligned
 
-# Research Highlights
+- Every animation stops when it leaves the screen or the tab is hidden, and turns at a rate set in seconds, so it looks the same at any frame rate.
+- The hero is drawn with WebGL and falls back to the 2D canvas. The other drawings batch their marks by depth and color, so a frame makes a few dozen draw calls. Keep a new drawing under about 2 ms of script a frame on a fast machine.
+- A canvas is cleared one unit past each edge. On a screen scaled to 150 percent, a clear that stops at the layout size leaves the last row and column of pixels untouched, and they collect color.
+- Cards that sit in a row share their rows through CSS subgrid, so names, text, numbers, and links line up across the row. The invited talks are one grid, so every card has the same width and height.
+- The live map from synthyra.com is framed at the layout its page needs and scaled down to the stage by `initLiveMap`, because that page is built for a full window.
 
-## Protein-Protein Interaction Prediction (PPI)
-### Synteract
-- I've worked on a series of models named Synteract, which have made various contributions to the field of PPI.
-- Synteract-1 was the first [large language model approach for PPI prediction](https://huggingface.co/GleghornLab/SYNTERACT).
-  - Its preprint still ranks in the [**top 3% of research outputs**](https://www.biorxiv.org/content/10.1101/2023.06.07.544109v1.article-metrics) by Altmetric.
-  - We showed how negative sampling choices can unintentionally degrade performance (e.g., “accidental localizers”).
-- Synteract-2 was a jointly optimized system that predicted PPI, protein–protein binding affinity, and binding site locations, and was Synthyra's first product. At release, it was the top binding affinity predictor on the Affinity v5.5 and Haddock benchmarks.
+## Preview
 
-<img width="1000" alt="Synteract-2 binding affinity (pKd) prediction correlation plot" src="assets/synteract2_pkd.png" />
+```bash
+python -m http.server 8000
+```
 
-- I addressed key confounders in PPI data compilation—most recently the [accidental taxonomist](https://www.biorxiv.org/content/10.1101/2025.10.07.681002v1) phenomenon when training from pLM or adjacent embeddings.
-  - In review at BMC Bioinformatics
-- Synteract-3 was an internal model with a modified workflow relative to Synteract-2, enabling extremely high throughput and full interactome-scale prediction.
+Then open `http://localhost:8000/`.
 
-<img width="800" alt="Synteract-3 human intra-interactome prediction overview" src="assets/synteract3_human_intra_actome.png" />
+## Updating
 
-- Synteract-4 is Synthyra's current premier product, offering a 10% increase in performance on standardized [gold-standard benchmarks](https://academic.oup.com/bib/article/25/2/bbae076/7621029) compared to the entire field.
+- **After any change under `assets/`.** Run `python tools/stamp_assets.py`. It stamps each stylesheet and script link in `index.html` with a hash of its file, so a browser that still holds the old file fetches the new one. Without the stamp a reload can keep showing the old script for an hour or more.
+- **A new essay on Substack.** Copy one `<li>` in the `essays` list in the Writing section of `index.html`, newest first, and use the post's own title and subtitle. The `data-art` attribute names the sketch shown beside the list while that essay is in focus. Reuse one of the sketches in `initEssayArt` in `assets/js/site.js`, or add a new one there and name it in `makers`. The sketches carry no caption.
+- **A new paper, talk, poster, or abstract.** Copy one `<li>` in the `academic-list` list, newest first. Set `data-kind` to `publication`, `preprint`, `talk` (which also covers posters), or `abstract`, because the filter buttons read it. Author lists follow the source, with `<b>Hallee L</b>` in bold.
+- **A new invited talk.** Copy one `<div class="talk">` in the block under the list. A talk with public materials is an `<a class="talk">` that links to them, as the workshop card does.
+- **A new CV.** Replace `assets/logan_hallee_cv.pdf` and keep the file name, because the GitHub profile links to it.
+- **A new record or download count.** The SpeedrunningPLMs and rule30-open numbers come from those repositories' READMEs, and the download counts come from the Hugging Face API, so update them from there.
+- **The hero.** The map comes from the human map of the Synteract paper, a folder that holds `knn.npz`, `layout.npz`, `clusters.csv`, and `summary.json`. That folder is not in this repository. The script needs Python with NumPy, SciPy, and umap-learn, and the caption in `index.html` repeats its protein and cluster counts.
 
-<img width="800" alt="Synteract-4 benchmark performance summary (Bernet figure)" src="assets/bernett.png" />
+```bash
+python tools/build_universe.py MAP_FOLDER assets/data/universe_human.js
+```
 
-### Protein binder design
-We leveraged Synteract-2 binding affinity predictions alongside our generative model DSM:
-- DSM is the first protein language model (pLM) trained on the LLaDa masked diffusion process, enabling easy extension to pretrained pLMs to turn them into generative models.
+- **The structure.** Download a PDB file from the RCSB and run the script, which needs Python with NumPy.
 
-<table>
-  <tr>
-    <td>
-      <img width="250" alt="DSM architecture diagram (masked diffusion protein language model)" src="assets/dsm_architecture.png" />
-    </td>
-    <td>
-      <img width="700" alt="DSM paper figure highlighting EGFR binder design results" src="assets/dsm_paper_egfr_highlight.png" />
-    </td>
-  </tr>
-</table>
+```bash
+python tools/build_structure.py 1YY9.pdb assets/data/complex_1yy9.js
+```
 
-- DSM preserved representation quality while generating high-quality proteins.
-- DSM + Synteract-2 was used to increase the binding affinity of the commercial cancer treatment Cetuximab (projected [**$7B** market cap](https://www.reportsanddata.com/report-detail/cetuximab-market)). At release, our [Cetuximab variants had 90% higher binding affinity to EGFR](https://github.com/Gleghorn-Lab/DSM) versus the commercial option, and 30% higher than the nearest externally designed variant. The data are available on [Proteinbase](https://proteinbase.com/collections/dsm-round-1).
+- **The map.** Save two of Synthyra's public pages, the [E. coli cell](https://synthyra.com/atlas/tmap/model-organisms/escherichia-coli-k12/swissbiopics.html) and the [E. coli proteins against the human cell](https://synthyra.com/atlas/tmap/inter-actomes/escherichia-coli-k12-homo-sapiens/swissbiopics_ecoli_human_inter.html), and run the script on the saved files. It needs Python with NumPy, and it prints the number of contacts drawn, which the figure caption in `index.html` repeats.
 
-<table>
-  <tr>
-    <td>
-      <img width="500" alt="Structure of best-designed EGFR binder variant" src="assets/egfr_best_binder_structure.png" />
-    </td>
-    <td>
-      <img width="500" alt="Binding kinetics for EGFR binder variant 10.2" src="assets/dsm_egfr_10_2_kinetics.png" />
-    </td>
-  </tr>
-</table>
+```bash
+python tools/build_interactome.py ecoli_cell.html ecoli_human_inter.html assets/data/interactome_ecoli_human.js
+```
 
-### Tetris For Proteins
-- Collaborated with **Stephen Wolfram** & other mentors at the Wolfram Winter School.  
-- Developed “[Tetris For Proteins](https://community.wolfram.com/groups/-/m/t/2777595)” – a shape-based metric emulating "lock-and-key" protein-protein interactions.  
-- Generated hypotheses on protein aggregation likelihood.
+- **The profile banner.** The script draws a sketch of protein space as a still SVG for the `lhallee/lhallee` repository. The sketch comes from a seeded generator and not from data, and the banner says so.
 
-<table>
-  <tr>
-    <td>
-      <img src="assets/tetris_for_proteins_1.png" width="500" alt="Tetris For Proteins: shape-based interaction metric example (panel 1)" />
-    </td>
-    <td>
-      <img src="assets/tetris_for_proteins_2.png" width="500" alt="Tetris For Proteins: shape-based interaction metric example (panel 2)" />
-    </td>
-  </tr>
-</table>
+```bash
+python tools/build_banner.py ../lhallee/assets/banner.svg
+```
 
-## Open source projects
-
-### Protify
-- Protify is a low code solution for effectively evaluating and fine-tuning chemical language models.
-- Easy CLI and GUI interfaces.
-- It allows life scientists with no programming expertise to evaluate state-of-the-art models across datasets quickly to identify:
-  - The best model for a specific dataset
-  - The current limit of the field for a specific problem
-- Protify can build production grade models with ease, and we can match the performance of most state-of-the-art protein language model papers with a single CLI command
-
-### SpeedrunningPLMs
-- SpeedrunningPLMs is an attempt to apply modern NLP techniques, mostly inspired by the NanoGPT speedrun, toward BERT-like pLM pretraining
-- We have reduced the cost of pLM pretraining by over 500×.
-
-<img width="800" alt="SpeedrunningPLMs: protein language model pretraining cost comparison (500× reduction)" src="assets/pretraining_costs.png" />
-
-### FastPLMs
-- FastPLMs is a reimplementation of popular pLMs (ESM2, ESMC, E1) so they can be loaded easily with Hugging Face `AutoModel`. I also added convenience utilities for efficiently embedding entire datasets.
-- FastPLMs are downloaded via Hugging Face ~300,000 times per month.
-
-## Additional PhD work
-
-### Annotation Vocabulary
-- Invented the [**Annotation Vocabulary**](https://www.biorxiv.org/content/10.1101/2024.07.30.605924v1.abstract), a unique set of integers mapped to popular protein and gene ontologies.  
-- Enabled state-of-the-art protein annotation and generation models when paired with its own token embedding.
-- We generated **out-of-training-distribution** natural-looking sequences that returned BLAST hits and enrichment results consistent with the prompt.
-
-<img width="1000" alt="Annotation Vocabulary: generated sequence examples and evaluation summary" src="assets/gsm_generation_figure.png" />
-
-### Codon Usage Bias
-- Codon usage bias is highlighted as a key biological phenomenon and valuable feature for machine learning in [Nature Scientific Reports](https://www.nature.com/articles/s41598-023-28965-7).  
-  - Our models show codon usage with a powerful phylogenetic association.
-  - Introduced [**cdsBERT**](https://huggingface.co/GleghornLab/cdsBERT), showcasing cost-effective ways to enhance biological relevance in protein language models via a codon vocabulary.
-  - Synonymous codon embeddings occupied distinct spaces in latent space, implying that pLMs can improve from codon awareness.
-
-<img width="1000" alt="cdsBERT: PCA visualization showing structure in codon embedding space" src="https://github.com/user-attachments/assets/14fb09ba-e63f-486e-b943-07d5f86b991e" />
-
-### Mixture of Experts Extension
-- Invented a [Mixture of Experts extension](https://arxiv.org/abs/2401.15713) for scalable transformer networks adept at sentence similarity tasks.  
-  - Future networks with N experts could perform like N independently trained networks, offering significant time and computational savings in semantic retrieval systems.
-  - Published in [Nature Scientific Reports](https://www.nature.com/articles/s41598-025-98185-8)
-
-<img width="500" alt="Mixture of Experts extension: overview figure from publication" src="https://github.com/user-attachments/assets/faeb88a4-441c-4db8-9cd5-53246b66b4d0" />
-
-### Computer Vision in Biology
-- Collaborate on lab projects involving deep learning for reconstructing 3D organs from 2D Z-stacks.  
-- Informs morphometric and pharmacokinetic studies to further our understanding of organ structure and function.
-
----
-
-## Additional Projects & Publications
-
-- [featureranker](https://github.com/lhallee/featureranker): A Python package for feature ranking.  
-- Textbook Chapter on [Protein Language Models](https://www.researchgate.net/profile/Logan-Hallee/publication/378769504_413_Predicting_Structure_and_Function_of_Biomolecules_Through_Natural_Language_Processing_Tools/links/65e8d39dadc608480a056202/413-Predicting-Structure-and-Function-of-Biomolecules-Through-Natural-Language-Processing-Tools.pdf).
-- Machine Learning for identifying [cardioprotective molecules](https://www.ahajournals.org/doi/abs/10.1161/circ.149.suppl_1.P109) in minority groups.
-- Investigations of [Hsp90](https://www.mdpi.com/2075-4426/11/12/1373) and [Gamma secretase](https://www.mdpi.com/2075-4426/11/12/1294) in cardiac disease.
-
----
-
-## Socials / Websites
-
-- [Synthyra](https://synthyra.com/)
-- [GitHub](https://github.com/lhallee)
-- [LinkedIn](https://www.linkedin.com/in/logan-hallee/)
-- [X](https://x.com/Logan_Hallee)
-- [Gleghorn Lab](https://www.gleghornlab.com/)
-- [Medium](https://medium.com/minds-and-molecules)
-- [Substack](https://mindsandmolecules.substack.com/)
-- [Facebook](https://www.facebook.com/mindsandmolecules)
-
-### Contact
-
-Research inquiries: lhallee@udel.edu
-
-Business inquiries: logan@synthyra.com
-
----
-
-> **Last Updated**: January 2026
+Every number on the site comes from a paper, a public repository, or a public data page, and its source is linked beside the claim. Keep it that way.

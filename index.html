@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07090d">
+<title>Logan Hallee | Protein machine learning</title>
+<meta name="description" content="Logan Hallee builds protein language models, interaction predictors, and sequence design tools, and tests whether they learned the biology or a shortcut. Cofounder and CSO of Synthyra, postdoctoral fellow at the University of Delaware, and author of Minds and Molecules.">
+<link rel="canonical" href="https://lhallee.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Logan Hallee | Protein machine learning">
+<meta property="og:description" content="Models that learn the structure of the protein universe, and the tests that show whether they cheated. Research, open-source software, and essays.">
+<meta property="og:url" content="https://lhallee.github.io/">
+<meta property="og:image" content="https://lhallee.github.io/assets/img/logan_hallee.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@Logan_Hallee">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<script>document.documentElement.classList.add("js");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css?v=bbe80b472c">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Logan Hallee",
+  "url": "https://lhallee.github.io/",
+  "image": "https://lhallee.github.io/assets/img/logan_hallee.jpg",
+  "jobTitle": "Cofounder and Chief Scientific Officer",
+  "worksFor": { "@type": "Organization", "name": "Synthyra", "url": "https://synthyra.com/" },
+  "affiliation": { "@type": "CollegeOrUniversity", "name": "University of Delaware" },
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "University of Delaware" },
+  "knowsAbout": ["protein language models", "protein-protein interaction prediction", "protein design", "machine learning"],
+  "sameAs": [
+    "https://github.com/lhallee",
+    "https://www.linkedin.com/in/logan-hallee/",
+    "https://x.com/Logan_Hallee",
+    "https://mindsandmolecules.substack.com/",
+    "https://orcid.org/0000-0002-0426-3508"
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#research">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">Logan Hallee</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#research">Research</a>
+      <a href="#open-source">Open source</a>
+      <a href="#writing">Writing</a>
+      <a class="optional" href="#academic">Academic</a>
+      <a class="optional" href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="who">
+        <img src="assets/img/logan_hallee.jpg" width="460" height="460" alt="Logan Hallee">
+        <div><h1>Logan Hallee</h1><span>Protein machine learning</span></div>
+      </div>
+      <p class="statement">I build models that learn the structure of the protein universe, and I spend nearly as much time making sure they are <em>not cheating</em>.</p>
+      <p class="lede">I am the cofounder and CSO of <a href="https://synthyra.com/">Synthyra</a> and a postdoctoral research fellow at the University of Delaware, where I work on protein language models, interaction prediction, and sequence design. When I should be doing any of that, I write <a href="#writing">Minds and Molecules</a>.</p>
+      <div class="actions">
+        <a class="btn primary" href="#research">Read the research</a>
+        <a class="btn" href="#open-source">Spend your spare compute</a>
+      </div>
+      <div class="elsewhere">
+        <a href="assets/logan_hallee_cv.pdf">CV</a>
+        <a href="https://github.com/lhallee">GitHub</a>
+        <a href="https://huggingface.co/Synthyra">Hugging Face</a>
+        <a href="https://www.linkedin.com/in/logan-hallee/">LinkedIn</a>
+        <a href="https://x.com/Logan_Hallee">X</a>
+        <a href="https://mindsandmolecules.substack.com/">Substack</a>
+      </div>
+    </div>
+    <figure class="structure cosmos">
+      <div class="stage"><canvas id="cosmos" role="img" aria-label="A slowly turning map of the human proteome. Thousands of points, one for each protein, are joined into a branching tree and colored by the group each protein falls in."></canvas><span class="tag" id="cosmos-tag" hidden></span></div>
+      <figcaption>The human proteome as Synteract, my newest interaction model, arranges it. Each of 19,226 points is a protein, each branch joins two proteins the model expects to bind, and color marks 16 groups found by clustering its predictions, from <span style="color: rgb(103, 232, 249)">olfactory receptors</span> to <span style="color: rgb(253, 150, 90)">zinc-finger transcription factors</span>. Hover to name a group, and drag to turn it.</figcaption>
+    </figure>
+  </div>
+</div>
+
+<section id="research">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label">Research</span>
+      <h2>A model learns whatever separates its labels.</h2>
+      <p>Sometimes that is biology, and often it is a shortcut that looks exactly like biology until somebody changes the test. Do I think every high score in the field is a mirage? No, but the shortcuts are common enough that I keep three threads of work running, which are catching the shortcut, building better representations, and designing proteins that have to survive a real assay.</p>
+    </div>
+
+    <article class="thread reveal">
+      <header class="thread-head">
+        <span class="num">01 / Evaluation</span>
+        <h3>Did the model learn the biology?</h3>
+        <p>High scores are cheap when the data leaks, so these papers find the leak, name it, and report what is left once it is closed.</p>
+        <div class="viz" aria-hidden="true">
+          <svg id="viz-clusters" viewBox="0 0 292 170"></svg>
+          <div class="cap">embeddings, colored by species</div>
+        </div>
+      </header>
+      <div class="thread-body">
+        <div class="work">
+          <p class="meta">BMC Bioinformatics, 2026</p>
+          <h4><a href="https://doi.org/10.1186/s12859-026-06491-3">Protein language models are accidental taxonomists</a></h4>
+          <p>In multi-species interaction datasets the true pairs usually share a species while randomly sampled negatives do not, and protein language model embeddings can tell whether two proteins share a taxonomic origin, so a model can ace the benchmark by learning phylogeny instead of interaction. When we restricted the negatives to pairs from the same species the shortcut closed and performance dropped, although those models still beat single-species ones, which means multi-species data helps once it is curated with care.</p>
+          <p class="links"><a href="https://doi.org/10.1186/s12859-026-06491-3">Paper</a></p>
+        </div>
+        <div class="work">
+          <p class="meta">bioRxiv, 2026</p>
+          <h4><a href="https://doi.org/10.64898/2026.11.04.764373">Protify, and what a benchmark ranking is worth</a></h4>
+          <p>Protify benchmarks 35 pretrained models on 61 datasets from one command, and running it at scale was humbling for anyone who likes a leaderboard. Across 32 supervised tasks no single model dominated, because 14 different models took a top score and the margins fell inside run-to-run variability. On enzyme optimal pH, probes on pooled embeddings looked strong until the split controlled for homology, where every one of them fell to an R<sup>2</sup> near zero, so a ranking says as much about the evaluation design as it does about the models.</p>
+          <p class="links"><a href="https://doi.org/10.64898/2026.11.04.764373">Paper</a><a href="https://github.com/Synthyra/Protify">Code</a></p>
+        </div>
+        <div class="work">
+          <p class="meta">bioRxiv, 2023</p>
+          <h4><a href="https://doi.org/10.1101/2023.06.07.544109">Interaction prediction with large language models</a></h4>
+          <p>This early language model approach to protein-protein interaction prediction is where the pattern first showed up, because depending on how the negatives are sampled a predictor can turn into an accidental localizer that scores well by guessing where proteins live.</p>
+          <p class="links"><a href="https://doi.org/10.1101/2023.06.07.544109">Paper</a><a href="https://huggingface.co/GleghornLab/SYNTERACT">Model</a></p>
+        </div>
+      </div>
+    </article>
+
+    <article class="thread reveal">
+      <header class="thread-head">
+        <span class="num">02 / Representation</span>
+        <h3>What should a protein model know, and what should it cost?</h3>
+        <p>New vocabularies and new attention, for models that know more about a protein than its sequence statistics.</p>
+        <div class="viz" aria-hidden="true">
+          <svg id="viz-triangles" viewBox="0 0 292 210"></svg>
+          <div class="cap">one head, two triangles</div>
+        </div>
+      </header>
+      <div class="thread-body">
+        <div class="work">
+          <p class="meta">bioRxiv, 2024</p>
+          <h4><a href="https://doi.org/10.1101/2024.07.30.605924">Annotation Vocabulary (might be) all you need</a></h4>
+          <p>The Annotation Vocabulary is a transformer-readable language of protein properties built from structured ontologies. A representation model trained with it for $3 of commercial compute produced state-of-the-art embeddings on 5 of 15 common datasets, and a generative model prompted with annotations alone wrote sequences that return significant BLAST hits whose enrichment matches the prompt, even when the target has low identity to the entire training set.</p>
+          <p class="links"><a href="https://doi.org/10.1101/2024.07.30.605924">Paper</a><a href="https://github.com/Gleghorn-Lab/AnnotationVocabulary">Code</a></p>
+        </div>
+        <div class="work">
+          <p class="meta">arXiv, 2026</p>
+          <h4><a href="https://arxiv.org/abs/2604.18603">Dual Triangle Attention</a></h4>
+          <p>Bidirectional attention is blind to position without positional embeddings, while causal attention is not, because its triangular mask carries order for free. Dual Triangle Attention splits each head into a past-and-self triangle and a future-and-self triangle, which keeps that positional signal in both directions with no added parameters. It learns position without positional embeddings on a synthetic probe, and with rotary embeddings it gave the best context extension in masked language modeling on both natural language and proteins.</p>
+          <p class="links"><a href="https://arxiv.org/abs/2604.18603">Paper</a></p>
+        </div>
+        <div class="work">
+          <p class="meta">Scientific Reports, 2025</p>
+          <h4><a href="https://doi.org/10.1038/s41598-025-98185-8">Mixture of experts for biological text</a></h4>
+          <p>Sentence similarity models struggle to compress a research paper into one useful vector, so we trained BERT models to predict whether two abstracts are cited together in a third paper across several biomedical domains. Every MLP block is copied into distinct experts that are routed by special tokens, which keeps the throughput exactly the same as a regular transformer.</p>
+          <p class="links"><a href="https://doi.org/10.1038/s41598-025-98185-8">Paper</a></p>
+        </div>
+      </div>
+    </article>
+
+    <article class="thread reveal">
+      <header class="thread-head">
+        <span class="num">03 / Design</span>
+        <h3>From representation to a protein that binds.</h3>
+        <p>One model that both reads and writes sequences, and designs that were measured at the bench.</p>
+        <div class="viz" aria-hidden="true">
+          <div class="seq" id="viz-sequence"></div>
+          <div class="cap">masked diffusion on HSP90</div>
+        </div>
+      </header>
+      <div class="thread-body">
+        <div class="work">
+          <p class="meta">arXiv, 2025</p>
+          <h4><a href="https://arxiv.org/abs/2506.08293">Diffusion Sequence Models</a></h4>
+          <p>A Diffusion Sequence Model is a protein language model trained with masked diffusion, so one set of weights both embeds and generates. It writes biomimetic sequences from inputs with 90% of the tokens corrupted, its representations match or exceed those of similarly sized models, and a variant conditioned on a target sequence generates binders.</p>
+          <p class="links"><a href="https://arxiv.org/abs/2506.08293">Paper</a><a href="https://github.com/Gleghorn-Lab/DSM">Code</a></p>
+        </div>
+        <div class="work with-figure">
+          <div>
+            <p class="meta">Bench result</p>
+            <h4><a href="https://proteinbase.com/collections/dsm-round-1">EGFR binders tighter than the cetuximab control</a></h4>
+            <p>In third-party biolayer interferometry, one designed EGFR binder reached a dissociation constant of 630 pM against 3.33 nM for the cetuximab scFv control, and six designs bound more tightly than that control. The measurements are public, and the drawing shows the receptor held by cetuximab, the antibody behind that control.</p>
+            <p class="links"><a href="https://proteinbase.com/collections/dsm-round-1">Data</a></p>
+          </div>
+          <figure class="structure small">
+            <div class="stage"><canvas id="structure" role="img" aria-label="A slowly turning backbone trace of the receptor EGFR bound by the antibody cetuximab, from PDB entry 1YY9."></canvas></div>
+            <figcaption><span class="t">EGFR</span> held by <span class="a">cetuximab</span>, PDB 1YY9. Drag to turn it.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="open-source">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label">Open source</span>
+      <h2>Everything here is public, and some of it wants your help.</h2>
+      <p>These projects are open source, and models from them have been downloaded more than 3 million times on Hugging Face, with more than 2.1 million of those through FastPLMs.</p>
+    </div>
+
+    <div class="open reveal">
+      <div class="open-head">
+        <span class="label amber">Open problems</span>
+        <h3>Got spare GPU hours or tokens? I have somewhere to put them.</h3>
+        <p>Two of these projects are open problems with a scoreboard, and both were built so that a stranger, or a stranger's coding agent, can start exactly where the last attempt stopped. Both also keep a public list of what failed and why, so nobody has to pay for the same dead end twice.</p>
+      </div>
+      <div class="problems">
+        <article class="problem glow">
+          <div class="problem-top">
+            <span class="chip">Spend GPU hours</span>
+            <div class="mini" aria-hidden="true">
+              <svg viewBox="0 0 96 56" fill="none" stroke="currentColor"><circle cx="70" cy="28" r="22" stroke-opacity="0.3" stroke-width="1.5"/><path d="M70 6a22 22 0 0 1 22 22" stroke-width="2.5" stroke-linecap="round"/><line class="hand" x1="70" y1="28" x2="70" y2="11" stroke-width="2" stroke-linecap="round"/><circle cx="70" cy="28" r="2.4" fill="currentColor" stroke="none"/></svg>
+            </div>
+          </div>
+          <h4>SpeedrunningPLMs</h4>
+          <p>How good a protein masked language model can one GPU train against a fixed clock? The data, objective, clock, evaluator, and model shape never change, so the only thing left to improve is the recipe, and a contribution is a new module or a recorded run. The 1 hour record sits within 0.03 nats of ESM2 8M, which trained for days and scores 2.6253 on the same residues.</p>
+          <div class="stats">
+            <div class="stat"><b>2.7022</b><span>test loss, 10 minute record</span></div>
+            <div class="stat"><b>2.6525</b><span>test loss, 1 hour record</span></div>
+          </div>
+          <p class="links"><a href="https://github.com/Synthyra/SpeedrunningPLMs">Repository</a><a href="https://github.com/Synthyra/SpeedrunningPLMs/blob/main/ideas/README.md">Untried ideas</a><a href="https://github.com/Synthyra/SpeedrunningPLMs/blob/main/program.md">The rules</a></p>
+        </article>
+        <article class="problem amber glow">
+          <div class="problem-top">
+            <span class="chip">Spend tokens</span>
+            <div class="mini" aria-hidden="true"><canvas id="rule30"></canvas></div>
+          </div>
+          <h4>rule30-open</h4>
+          <p>Rule 30 is a one-line cellular automaton whose center column looks random, and the Rule 30 Prize asks three questions about that column. Have I solved one? No, and neither has anyone else, but every theorem here is proved in Lean against the prize's official statements and every failed approach is written down with the reason it failed. The open work lists conjectures to settle and findings that still want a Lean proof, which is a fine job for an agent with tokens to burn.</p>
+          <div class="stats">
+            <div class="stat"><b>989</b><span>headline theorems in Lean</span></div>
+            <div class="stat"><b>85</b><span>negative results on record</span></div>
+          </div>
+          <p class="links"><a href="https://github.com/lhallee/rule30-open">Repository</a><a href="https://github.com/lhallee/rule30-open/blob/main/CATALOG.md#open-work">Open work</a><a href="https://github.com/lhallee/rule30-open/blob/main/ROADMAP.md">Roadmap</a></p>
+        </article>
+      </div>
+    </div>
+
+    <h3 class="sub">Libraries</h3>
+    <div class="cards reveal">
+      <a class="card glow" href="https://github.com/Synthyra/FastPLMs">
+        <h4>FastPLMs <span class="arrow" aria-hidden="true">&#8599;</span></h4>
+        <p>ESM2, ESMC, E1, DPLM, and other protein language and structure models behind one Hugging Face <code>AutoModel</code> call, each compared against its official source, with utilities for embedding whole datasets.</p>
+        <div class="stat"><b>2.1 million</b><span>model downloads on Hugging Face</span></div>
+        <span class="where">Synthyra/FastPLMs</span>
+      </a>
+      <a class="card glow" href="https://github.com/Synthyra/Protify">
+        <h4>Protify <span class="arrow" aria-hidden="true">&#8599;</span></h4>
+        <p>Benchmark and fine-tune protein language models from one command or a GUI with no code required, so that a life scientist can find the best model for a dataset and the current limit of the field for a problem.</p>
+        <span class="where">Synthyra/Protify</span>
+      </a>
+      <a class="card glow" href="https://github.com/Gleghorn-Lab/DSM">
+        <h4>DSM <span class="arrow" aria-hidden="true">&#8599;</span></h4>
+        <p>Diffusion Sequence Models, which put protein representation and design under a single training scheme and ship with pretrained weights.</p>
+        <span class="where">Gleghorn-Lab/DSM</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="company" id="company">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label">Company</span>
+      <h2>Synthyra</h2>
+      <blockquote>Whatever a pathogen does to a cell, it starts by binding, and binding can be predicted.</blockquote>
+    </div>
+    <div class="company-grid reveal">
+      <div>
+        <p>Synthyra is the Public Benefit LLC I cofounded in 2024. We are in talks with government, industry, and research organizations about three uses of our models, which are understanding how pathogens work, finding what treats them, and keeping new ones from being made through DNA and protein synthesis services.</p>
+        <p class="actions"><a class="btn" href="https://synthyra.com/">Visit synthyra.com</a><a class="btn" href="https://synthyra.com/demos">See the public demos</a></p>
+      </div>
+      <p>Those sound like three problems, and they are one. A virus gets into a cell because one of its proteins fits one of ours, a drug stops it by binding a protein the infection depends on, and a dangerous sequence is dangerous because of what its protein will bind once somebody makes it. Each comes down to what binds what, and that is the question Atlas, our model, answers for any protein from its sequence alone.</p>
+    </div>
+    <figure class="interactome reveal">
+      <div class="stage" id="interactome-stage">
+        <canvas id="interactome" role="img" aria-label="An E. coli cell on the left and a human cell on the right, with every protein placed in its cell compartment. Lights travel from protein to protein along predicted contacts. Each one starts inside the bacterium, spreads until it reaches the membrane, crosses the gap between the two facing membranes, and fans out into the human cell."></canvas>
+        <button class="toggle" id="interactome-contacts" type="button" aria-pressed="false">Show contacts</button>
+        <span class="side left"><b>E. coli K-12</b>4,403 proteins</span>
+        <span class="side right"><b>Human</b>20,659 proteins</span>
+        <button class="btn primary" id="interactome-live" type="button" aria-controls="interactome-stage" data-src="https://synthyra.com/atlas/tmap/inter-actomes/escherichia-coli-k12-homo-sapiens/swissbiopics_ecoli_human_inter.html" data-title="Atlas interactive map of E. coli proteins against the human cell">Explore the live map <small>9 MB</small></button>
+      </div>
+      <figcaption>How a bacterium meets a human cell, as Atlas predicts it. Each point is a protein placed in its cell compartment, and each moving light follows predicted contacts. It starts at one protein inside E. coli, spreads from partner to partner until it reaches the membrane, crosses the gap where that membrane protein meets human membrane proteins, and fans out into the human cell. The lights show paths through the predictions and do not model signaling. The crossings are drawn from 623 predicted contacts between an E. coli membrane protein and a human membrane protein, each scored 99 or 100 on Atlas's scale of 100, and the proteins that hold them sit on the two sides that face each other. Show contacts draws all 623, along with a sample of each cell's own strongest contacts. Secreted proteins are left out of the drawing. In the live map you pick an E. coli protein and see where it lands in the human cell, and Synthyra builds the same map for a pathogen. <a href="https://synthyra.com/demos/artifacts?organism=escherichia-coli-k12">Open it on synthyra.com</a></figcaption>
+    </figure>
+    <div class="cards programs reveal">
+      <a class="card glow" href="https://synthyra.com/host-pathogen">
+        <span class="chip">Understand</span>
+        <h4>How a pathogen works <span class="arrow" aria-hidden="true">&#8599;</span></h4>
+        <p>Infection starts when a pathogen's proteins bind the host's. Atlas scores every pathogen protein against every host protein and ranks the contacts a laboratory should test first, so a response team has a short list on day one and the bench confirms it.</p>
+      </a>
+      <a class="card glow" href="https://synthyra.com/demos/andes-hantavirus">
+        <span class="chip">Treat</span>
+        <h4>What stops it <span class="arrow" aria-hidden="true">&#8599;</span></h4>
+        <p>For a drug the question runs the other way, and Atlas predicts which proteins a small molecule binds, including the ones it should leave alone. In the public demo it scores three Andes hantavirus proteins against every drug the FDA has approved and shows the structures behind its top two candidates. Both are predictions for a laboratory to test, and both are covered by filed provisional patent applications that name Jason Gleghorn and me as the inventors.</p>
+      </a>
+      <a class="card glow" href="https://synthyra.com/biosecurity">
+        <span class="chip">Prevent</span>
+        <h4>What should not be made <span class="arrow" aria-hidden="true">&#8599;</span></h4>
+        <p>DNA synthesis screening compares an order against lists of known dangerous sequences, so a sequence that is new or redesigned matches nothing and passes without a second look. Atlas reads what a DNA or protein order is and what it would do, and the orders that need a person reach one along with the reason.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="writing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label">Minds and Molecules</span>
+      <h2>The same question, one level up.</h2>
+      <p>Minds and Molecules is where I ask what structure is really out there and how a mind would find it. The essays cover science, computation, and philosophy, and they are speculative on purpose and say so.</p>
+    </div>
+    <div class="writing-grid reveal">
+    <ul class="essays">
+      <li><a class="essay" data-art="speed" href="https://mindsandmolecules.substack.com/p/we-are-moving-too-goddamn-fast">
+        <time datetime="2026-11-10">Nov 2026</time>
+        <div><h3>We Are Moving Too Goddamn Fast</h3><p>A doomer and an accelerationist walk into a data center.</p></div>
+        <span class="arrow" aria-hidden="true">&#8599;</span>
+      </a></li>
+      <li><a class="essay" data-art="tesseract" href="https://mindsandmolecules.substack.com/p/the-geometry-of-mathematical-taste">
+        <time datetime="2026-09-18">Sep 2026</time>
+        <div><h3>The Geometry of Mathematical Taste</h3><p>What happens when machines get better at proving theorems than we are at understanding them?</p></div>
+        <span class="arrow" aria-hidden="true">&#8599;</span>
+      </a></li>
+      <li><a class="essay" data-art="selection" href="https://mindsandmolecules.substack.com/p/memes-and-the-machinery-of-selection">
+        <time datetime="2026-06-04">Jun 2026</time>
+        <div><h3>Memes and the Machinery of Selection</h3><p>How patterns persist, replicate, and reshape their own constraints.</p></div>
+        <span class="arrow" aria-hidden="true">&#8599;</span>
+      </a></li>
+      <li><a class="essay" data-art="loop" href="https://mindsandmolecules.substack.com/p/how-to-build-conscious-agi">
+        <time datetime="2025-01-01">Jan 2025</time>
+        <div><h3>How to build Conscious AGI</h3><p>Consciousness as a signal in a network so large and interconnected that it cannot help but run back into itself.</p></div>
+        <span class="arrow" aria-hidden="true">&#8599;</span>
+      </a></li>
+    </ul>
+    <figure class="essay-art">
+      <div class="stage"><canvas id="essay-canvas" role="img" aria-label="An animated sketch that changes with the essay in focus. It is decoration and carries no data."></canvas></div>
+    </figure>
+    </div>
+    <div class="writing-foot">
+      <a class="btn primary" href="https://mindsandmolecules.substack.com/">Subscribe on Substack</a>
+    </div>
+  </div>
+</section>
+
+<section id="academic">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label">Academic work</span>
+      <h2>Papers, preprints, talks, and abstracts.</h2>
+      <p>Everything is in one list with the newest first, and the <a href="assets/logan_hallee_cv.pdf">CV</a> has the formal record.</p>
+    </div>
+    <div class="filters" role="group" aria-label="Filter academic work">
+      <button type="button" data-kind="all" aria-pressed="true">All</button>
+      <button type="button" data-kind="publication" aria-pressed="false">Publications</button>
+      <button type="button" data-kind="preprint" aria-pressed="false">Preprints</button>
+      <button type="button" data-kind="talk" aria-pressed="false">Talks and posters</button>
+      <button type="button" data-kind="abstract" aria-pressed="false">Abstracts</button>
+    </div>
+    <ul class="papers reveal" id="academic-list">
+      <li data-kind="publication"><span class="year">2026</span><div>
+        <a class="title" href="https://doi.org/10.1186/s12859-026-06491-3">Protein language models are accidental taxonomists</a>
+        <p class="authors"><b>Hallee L</b>, Peleg T, Rafailidis N, Gleghorn JP. <span class="venue">BMC Bioinformatics</span> 27, 188</p>
+      </div></li>
+      <li data-kind="publication"><span class="year">2026</span><div>
+        <span class="title">Predicting Structure and Function of Biomolecules Through Natural Language Processing Tools</span>
+        <p class="authors"><b>Hallee L</b>, Jakubowski H. <span class="venue">Fundamentals of Biochemistry, Volume I</span>, section 4.13, Biology LibreTexts<span class="tag">book chapter</span></p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2026</span><div>
+        <a class="title" href="https://doi.org/10.64898/2026.11.04.764373">Protify: A Benchmarking Platform Revealing Task Dependence and Homology Leakage in Protein Language Model Evaluation</a>
+        <p class="authors">Rafailidis N, <b>Hallee L</b>, Peleg T, Horger C, Haviland L, Gleghorn JP. <span class="venue">bioRxiv</span><span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2026</span><div>
+        <a class="title" href="https://arxiv.org/abs/2604.18603">Dual Triangle Attention: Effective Bidirectional Attention Without Positional Embeddings</a>
+        <p class="authors"><b>Hallee L</b>, Gleghorn JP. <span class="venue">arXiv</span><span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2026</span><div>
+        <a class="title" href="https://doi.org/10.64898/2026.09.28.752142">VPS34 regulation in pulmonary arterial vascular smooth muscle cells in pulmonary hypertension</a>
+        <p class="authors">Natoli A, Reinhard B, <b>Hallee L</b>, Zhang H, Piza-Taylor K, Aung F, Poznahovska A, Gleghorn JP, Lucas R, DiVita M, Shen Y. <span class="venue">bioRxiv</span><span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="abstract"><span class="year">2026</span><div>
+        <span class="title">Protein Phosphatase 1 Catalytic Subunit Alpha Upregulation Is Associated With AKT-Mediated Activation of Vacuolar Sorting Protein 34 in Pulmonary Arterial Smooth Muscle in Pulmonary Hypertension</span>
+        <p class="authors">Piza-Taylor K, Aung F, Natoli A, <b>Hallee L</b>, Gleghorn JP, Shen Y. <span class="venue">New York State American Thoracic Society Seminar</span>, submitted<span class="tag">abstract</span></p>
+      </div></li>
+      <li data-kind="publication"><span class="year">2025</span><div>
+        <a class="title" href="https://doi.org/10.1038/s41598-025-98185-8">Contrastive learning and mixture of experts enables precise vector embeddings in biological databases</a>
+        <p class="authors"><b>Hallee L</b>, Kapur R, Patel A, Gleghorn JP, Khomtchouk BB. <span class="venue">Scientific Reports</span> 15, 14943</p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2025</span><div>
+        <a class="title" href="https://arxiv.org/abs/2506.08293">Diffusion Sequence Models for Enhanced Protein Representation and Generation</a>
+        <p class="authors"><b>Hallee L</b>, Rafailidis N, Bichara DB, Gleghorn JP. <span class="venue">arXiv</span><span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2025</span><div>
+        <a class="title" href="https://doi.org/10.1101/2025.04.17.648362">Crowdsourced Protein Design: Lessons From the Adaptyv EGFR Binder Competition</a>
+        <p class="authors">Cotet T-S, Krawczuk I, and 25 others including <b>Hallee L</b>, with the Adaptyv Competition Organizers. <span class="venue">bioRxiv</span><span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="talk"><span class="year">2025</span><div>
+        <span class="title">Biomimetic Protein Sequence Generation and Representation with Annotation Vocabulary</span>
+        <p class="authors"><b>Hallee L</b>, Rafailidis N, Horger C, Hong D, Gleghorn JP. <span class="venue">University of Delaware Synthetic Biology Symposium</span>, second place in the poster competition<span class="tag">poster</span></p>
+      </div></li>
+      <li data-kind="talk"><span class="year">2025</span><div>
+        <span class="title">Protify: A Low-Code Protein Property Prediction Tool</span>
+        <p class="authors">Rafailidis N, Peleg T, <b>Hallee L</b>, Gleghorn JP. <span class="venue">University of Delaware Bioinformatics Data Science Symposium</span>, second place in the poster competition<span class="tag">poster</span></p>
+      </div></li>
+      <li data-kind="talk"><span class="year">2025</span><div>
+        <span class="title">Protify: A Low-Code Protein Property Prediction Tool, Subcellular Localization and Taxonomy Case Studies</span>
+        <p class="authors">Peleg T, Rafailidis N, <b>Hallee L</b>, Gleghorn JP. <span class="venue">Biomedical Engineering Society Annual Meeting</span><span class="tag">poster</span></p>
+      </div></li>
+      <li data-kind="abstract"><span class="year">2025</span><div>
+        <span class="title">Pulmonary arterial smooth muscle VPS34 activation is a shared molecular mechanism in adult pulmonary hypertension and congenital diaphragmatic hernia-associated pulmonary vascular remodeling</span>
+        <p class="authors">Gonyea C, Natoli A, <b>Hallee L</b>, Gleghorn JP, Shen Y. <span class="venue">American Heart Association Scientific Sessions</span>, published in Circulation 152<span class="tag">abstract</span></p>
+      </div></li>
+      <li data-kind="abstract"><span class="year">2025</span><div>
+        <span class="title">Akt-dependent Vacuolar Protein Sorting 34 Activation in Pulmonary Arterial Vascular Is a Shared Molecular Mechanism in Adult Pulmonary Hypertension and Congenital Diaphragmatic Hernia-associated Pulmonary Vascular Remodeling</span>
+        <p class="authors">Shen Y, Gonyea CR, <b>Hallee L</b>, Gleghorn JP. <span class="venue">American Thoracic Society International Conference</span>, published in Am J Respir Crit Care Med 211<span class="tag">abstract</span></p>
+      </div></li>
+      <li data-kind="abstract"><span class="year">2025</span><div>
+        <span class="title">Targeting ER/SR HAX-1/Hsp90 Interaction to Enhance Cardiomyocyte Contractility and Survival upon Stress</span>
+        <p class="authors">Sen S, Roberts R, Wisner H, <b>Hallee L</b>, Lam CK. <span class="venue">American Heart Association Basic Cardiovascular Sciences Scientific Sessions</span><span class="tag">abstract</span></p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2024</span><div>
+        <a class="title" href="https://doi.org/10.1101/2024.07.30.605924">Annotation Vocabulary (Might Be) All You Need</a>
+        <p class="authors"><b>Hallee L</b>, Rafailidis N, Horger C, Hong D, Gleghorn JP. <span class="venue">bioRxiv</span><span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="talk"><span class="year">2024</span><div>
+        <span class="title">A Supervised Machine Learning Approach Using Lung Vasculature to Classify Congenital Diaphragmatic Hernia Severity</span>
+        <p class="authors">Miller M, <b>Hallee L</b>, Gonyea C, Gleghorn JP. <span class="venue">Biomedical Engineering Society Annual Meeting</span><span class="tag">talk</span></p>
+      </div></li>
+      <li data-kind="talk"><span class="year">2024</span><div>
+        <span class="title">Artificial intelligence-powered drug discovery: A case study on LD50 prediction and molecular optimization</span>
+        <p class="authors"><b>Hallee L</b>, Roa N, Rafailidis N, Le T, Horger C, Singh H, Ohashi N, Lu P. <span class="venue">International Conference for High Performance Computing, Networking, Storage, and Analysis</span><span class="tag">poster</span></p>
+      </div></li>
+      <li data-kind="talk"><span class="year">2024</span><div>
+        <span class="title">A Dynamic Time Warping-Based Approach for 2D Affine Image Alignment</span>
+        <p class="authors">Wang L, <b>Hallee L</b>, Gleghorn JP. <span class="venue">Biomedical Engineering Society Annual Meeting</span><span class="tag">poster</span></p>
+      </div></li>
+      <li data-kind="abstract"><span class="year">2024</span><div>
+        <span class="title">HDL Cholesterol Confers Exceptionally Strong Cardioprotective and Metabolic Effects in Native Hawaiian and Pacific Islander Populations</span>
+        <p class="authors">Szatrowski A, Sun P, Lee Y, Lord G, <b>Hallee L</b>, Hedges J, Khomtchouk BB. <span class="venue">American Heart Association Epidemiology and Prevention, Lifestyle and Cardiometabolic Health Scientific Sessions</span>, published in Circulation 149<span class="tag">abstract</span></p>
+      </div></li>
+      <li data-kind="publication"><span class="year">2023</span><div>
+        <a class="title" href="https://doi.org/10.1038/s41598-023-28965-7">Machine learning classifiers predict key genomic and evolutionary traits across the kingdoms of life</a>
+        <p class="authors"><b>Hallee L</b>, Khomtchouk BB. <span class="venue">Scientific Reports</span> 13, 2088</p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2023</span><div>
+        <a class="title" href="https://doi.org/10.1101/2023.09.15.558027">cdsBERT: Extending Protein Language Models with Codon Awareness</a>
+        <p class="authors"><b>Hallee L</b>, Rafailidis N, Gleghorn JP. <span class="venue">bioRxiv</span><span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2023</span><div>
+        <a class="title" href="https://doi.org/10.1101/2023.06.07.544109">Protein-Protein Interaction Prediction is Achievable with Large Language Models</a>
+        <p class="authors"><b>Hallee L</b>, Gleghorn JP. <span class="venue">bioRxiv</span><span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="preprint"><span class="year">2023</span><div>
+        <a class="title" href="https://community.wolfram.com/groups/-/m/t/2777595">Tetris for Proteins: Shape-Based Molecular Chemistry in the Wolfram Language</a>
+        <p class="authors"><b>Hallee L</b>. <span class="venue">Wolfram Community</span>, from the Wolfram Winter School<span class="tag">preprint</span></p>
+      </div></li>
+      <li data-kind="talk"><span class="year">2023</span><div>
+        <span class="title">WINDOWZ: 2D Segmentation and 3D Reconstruction of Biomedical Z-stacks</span>
+        <p class="authors"><b>Hallee L</b>, Donzanti M, Gleghorn JP. <span class="venue">University of Delaware Computer and Information Sciences Research Day</span><span class="tag">talk</span></p>
+      </div></li>
+      <li data-kind="talk"><span class="year">2023</span><div>
+        <span class="title">Windowed Biomedical Image Segmentation with Attentive-Recurrent-UNET</span>
+        <p class="authors"><b>Hallee L</b>, Donzanti M, Gleghorn JP. <span class="venue">University of Delaware AI Center of Excellence Workshop</span><span class="tag">poster</span></p>
+      </div></li>
+      <li data-kind="publication"><span class="year">2021</span><div>
+        <a class="title" href="https://doi.org/10.3390/jpm11121373">The Potential of Hsp90 in Targeting Pathological Pathways in Cardiac Diseases</a>
+        <p class="authors">Roberts RJ, <b>Hallee L</b>, Lam CK. <span class="venue">Journal of Personalized Medicine</span> 11, 1373</p>
+      </div></li>
+      <li data-kind="publication"><span class="year">2021</span><div>
+        <a class="title" href="https://doi.org/10.3390/jpm11121294">The Potential of Gamma Secretase as a Therapeutic Target for Cardiac Diseases</a>
+        <p class="authors">Sen S, <b>Hallee L</b>, Lam CK. <span class="venue">Journal of Personalized Medicine</span> 11, 1294</p>
+      </div></li>
+    </ul>
+    <button class="btn" id="academic-more" type="button" hidden>Show all</button>
+    <div class="invited reveal">
+      <span class="label">Invited talks, seminars, and workshops</span>
+      <div class="invited-row">
+        <div class="talk"><b>Cradle</b><span>Z&uuml;rich, 2025</span></div>
+        <div class="talk"><b>Adaptyv Bio</b><span>Lausanne, 2025</span></div>
+        <div class="talk"><b>Novonesis and the Technical University of Denmark</b><span>Virtual, 2025</span></div>
+        <div class="talk"><b>Electrical and Computer Engineering seminar series</b><span>University of Delaware, 2025</span></div>
+        <div class="talk"><b>Center for Bioinformatics and Computational Biology seminar</b><span>University of Delaware, 2025</span></div>
+        <a class="talk" href="https://github.com/lhallee/MachineLearningResources/tree/main/transformers_workshop"><b>Transformers Workshop <i class="arrow" aria-hidden="true">&#8599;</i></b><span>Lecture video and notebooks, 2025</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label">About</span>
+      <h2>Biochemistry as a programmable medium.</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-prose">
+        <p>I am motivated by safe computational systems that help us understand the universe at every level of abstraction, and most of my effort goes toward high-fidelity modeling of the protein universe, which is the work that turns biochemistry into a programmable medium.</p>
+        <p>I believe real biochemical mastery can unlock organic carbon capture, better crops, efficient circular economies, and major advances in medicine.</p>
+        <dl class="contact">
+          <dt>Research</dt><dd><a href="mailto:lhallee@udel.edu">lhallee@udel.edu</a></dd>
+          <dt>Business</dt><dd><a href="mailto:logan@synthyra.com">logan@synthyra.com</a></dd>
+        </dl>
+      </div>
+      <div class="facts">
+        <div>
+          <h3>Now</h3>
+          <ul>
+            <li><div>Cofounder and Chief Scientific Officer, <a href="https://synthyra.com/">Synthyra</a></div> <span>2024 to now</span></li>
+            <li><div>Postdoctoral Research Fellow, <a href="https://www.gleghornlab.com/">Gleghorn Lab</a>, University of Delaware</div> <span>2026 to now</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Education</h3>
+          <ul>
+            <li>PhD, Bioinformatics Data Science, University of Delaware <span>2026</span></li>
+            <li>BS, Quantitative Biology, University of Delaware <span>2022</span></li>
+            <li>AAS, Biological Sciences, Delaware Technical Community College <span>2020</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Recognition</h3>
+          <ul>
+            <li>Innovation Delaware Fellow <span>2026</span></li>
+            <li>Institute for Engineering Driven Health Postdoctoral Researcher Award <span>2026</span></li>
+            <li>NIH T32 predoctoral training grant <span>2025</span></li>
+            <li>Unidel Distinguished Graduate Scholars Fellowship <span>2022</span></li>
+            <li>William Clark Prize in mathematics <span>2022</span></li>
+            <li>Math and Physics Department Outstanding Performance Award <span>2020</span></li>
+            <li>Phi Theta Kappa Honor Society <span>2019</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <p class="epigraph">&ldquo;Somewhere in the semantics of natural language and the ambiguity of our understanding in reality leaves truth as one of the great mysteries.&rdquo;</p>
+      <div class="foot-links">
+        <a href="https://github.com/lhallee">GitHub</a>
+        <a href="https://huggingface.co/Synthyra">Hugging Face</a>
+        <a href="https://www.linkedin.com/in/logan-hallee/">LinkedIn</a>
+        <a href="https://x.com/Logan_Hallee">X</a>
+        <a href="https://mindsandmolecules.substack.com/">Substack</a>
+        <a href="https://orcid.org/0000-0002-0426-3508">ORCID</a>
+      </div>
+    </div>
+    <p class="fine">Logan Hallee. The source of this page is on <a href="https://github.com/lhallee/lhallee.github.io">GitHub</a>.</p>
+  </div>
+</footer>
+
+<script src="assets/data/universe_human.js?v=2739ac8434" defer></script>
+<script src="assets/data/complex_1yy9.js?v=3246529c0a" defer></script>
+<script src="assets/data/interactome_ecoli_human.js?v=7d2a5fd2c6" defer></script>
+<script src="assets/js/site.js?v=cda59e2a22" defer></script>
+</body>
+</html>

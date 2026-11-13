@@ -1,0 +1,5 @@
+# The site is plain HTML. Jekyll only copies it; these files stay out of the build.
+exclude:
+  - README.md
+  - AGENTS.md
+  - tools
